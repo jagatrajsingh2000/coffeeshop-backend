@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = require("@apollo/server");
 const user_1 = require("./user");
+const menuItems_1 = require("./menuItems");
 function createApolloGraphqlServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const gqlServer = new server_1.ApolloServer({
@@ -20,11 +21,12 @@ function createApolloGraphqlServer() {
         }
         type Mutation {
             ${user_1.User.mutation}
+            ${menuItems_1.Menu.mutation}
         }
         `,
             resolvers: {
                 Query: Object.assign({}, user_1.User.resolvers.queries),
-                Mutation: Object.assign({}, user_1.User.resolvers.mutations)
+                Mutation: Object.assign(Object.assign({}, user_1.User.resolvers.mutations), menuItems_1.Menu.resolvers.mutations)
             }
         });
         yield gqlServer.start();

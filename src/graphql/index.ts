@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { User } from "./user";
+import { Menu } from "./menuItems";
 async function createApolloGraphqlServer(){
     const gqlServer = new ApolloServer({
         typeDefs:`
@@ -8,6 +9,7 @@ async function createApolloGraphqlServer(){
         }
         type Mutation {
             ${User.mutation}
+            ${Menu.mutation}
         }
         `, //Schema
         resolvers: {
@@ -15,7 +17,8 @@ async function createApolloGraphqlServer(){
                 ...User.resolvers.queries
             },
             Mutation: {
-                ...User.resolvers.mutations
+                ...User.resolvers.mutations,
+                ...Menu.resolvers.mutations
             }
         }
     });

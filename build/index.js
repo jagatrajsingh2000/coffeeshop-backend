@@ -15,11 +15,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const graphql_1 = __importDefault(require("./graphql"));
 const express4_1 = require("@apollo/server/express4");
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
+const storage = multer_1.default.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+        const extension = path_1.default.extname(file.originalname);
+        const filename = `${file.fieldname}-${Date.now()}${extension}`;
+        cb(null, filename);
+    },
+});
+const upload = (0, multer_1.default)({ storage });
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
         const PORT = Number(process.env.PORT) || 8000;
         app.use(express_1.default.json());
+        app.use((req, res, next) => {
+            req.upload = upload;
+            next();
+        });
         app.get("/", (req, res) => {
             res.json({ message: "Server is up and runing" });
         });

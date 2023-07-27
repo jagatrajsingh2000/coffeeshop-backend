@@ -63,6 +63,7 @@ model CartItem {
   menuItem MenuItem @relation(fields: [menuItemId], references: [id])
   menuItemId String
   quantity Int
+  notes String
 
   @@map("cart_items")
 }
