@@ -8,27 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const server_1 = require("@apollo/server");
-const user_1 = require("./user");
-function createApolloGraphqlServer() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const gqlServer = new server_1.ApolloServer({
-            typeDefs: `
-        type Query {
-            ${user_1.User.queries}
-        }
-        type Mutation {
-            ${user_1.User.mutation}
-        }
-        `,
-            resolvers: {
-                Query: Object.assign({}, user_1.User.resolvers.queries),
-                Mutation: Object.assign({}, user_1.User.resolvers.mutations)
-            }
+exports.resolvers = void 0;
+const user_1 = __importDefault(require("../../services/user"));
+const queries = {
+    getUserToken: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
+        const token = yield user_1.default.getUserToken({
+            email: payload.email,
+            password: payload.password,
         });
-        yield gqlServer.start();
-        return gqlServer;
-    });
-}
-exports.default = createApolloGraphqlServer;
+        return token;
+    }),
+};
+const mutations = {
+    createUser: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield user_1.default.createUser(payload);
+        return res.id;
+    }),
+};
+exports.resolvers = { queries, mutations };

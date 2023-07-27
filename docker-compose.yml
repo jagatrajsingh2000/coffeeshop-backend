@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   postgres:
-    container_name: coffeshop-db
+    container_name: coffeeshop-db
     image: postgres
     ports:
       - 5432:5432
@@ -10,8 +10,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: coffeshop
-      POSTGRES_PASSWORD: coffeshop
+      POSTGRES_DB: coffeeshop
+      POSTGRES_PASSWORD: coffeeshop
 
 volumes:
   postgres_data:

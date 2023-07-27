@@ -1,4 +1,5 @@
 import express from "express";
+import createApolloGraphqlServer from "./graphql";
 import { expressMiddleware } from "@apollo/server/express4";
 
 async function init(){
@@ -9,7 +10,7 @@ async function init(){
     app.get("/",(req, res) => {
         res.json({ message: "Server is up and runing"});
     });
-
+    app.use("/graphql", expressMiddleware(await createApolloGraphqlServer()));
     app.listen(PORT, () => console.log(`Server is running at ${PORT}`) )
 }
 init()
